@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.equipmentmapper">
+    <insert id="insertequipment" parameterType="Equipment" useGeneratedKeys="true" keyProperty="id">
+        insert into Equipment (etype, ename, owner) values (#{etype}, #{ename}, #{owner})
+    </insert>
+    <select id="selectequipmentbyname" resultType="Equipment">
+        select * from Equipment where ename = #{ename}
+    </select>
+    
+    <select id="selectequipmentbyship" resultMap="getshipequip">
+        select * from Ship s, Equipment e where s.sid=e.owner and s.sname=#{sname}
+    </select>
+    
+    <resultMap type ="com.example.domain.Equipment" id = "getshipequip">
+        <id column = "eid" property = "eid"></id>
+        <result column = "etype" property = "etype"/>
+        <result column = "ename" property = "ename"/>
+        <association property = "eship" javaType = "com.example.domain.Ship">
+            <id column = "sid" property = "sid"/>
+            <result column = "stype" property = "stype"/>
+            <result column = "sname" property = "sname"/>
+        </association>
+    </resultMap>
+    
+</mapper>
